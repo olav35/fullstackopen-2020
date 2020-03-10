@@ -1,0 +1,5 @@
+GET https://fullstack-exampleapp.herokuapp.com/spa
+GET https://fullstack-exampleapp.herokuapp.com/main.css
+GET https://fullstack-exampleapp.herokuapp.com/spa.js
+GET https://fullstack-exampleapp.herokuapp.com/data.json
+POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
