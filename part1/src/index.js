@@ -3,9 +3,11 @@ import ReactDOM from 'react-dom'
 
 const Header = (props) => <h1>{props.course}</h1>
 
+const Part = (props) => <p>{props.name} {props.exercises}</p>
+
 const Content = (props) => {
   return props.parts.map(part => (
-    <p>{part.name} {part.exercises}</p>
+    <Part name={part.name} exercises={part.exercises}/>
   )
   )
 }
