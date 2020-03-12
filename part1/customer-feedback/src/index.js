@@ -1,14 +1,20 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
+const Button = (props) => 
+  <button id={props.id} onClick={props.onClick}>{props.id}</button>
+
 const Feedback = (props) => (
   <div>
     <h1>give feedback</h1>
-    <button id="good" onClick={props.clickHandler}>good</button>
-    <button id="neutral" onClick={props.clickHandler}>neutral</button>
-    <button id="bad" onClick={props.clickHandler}>bad</button>
+    <Button id="good" onClick={props.clickHandler}/>
+    <Button id="neutral" onClick={props.clickHandler}/>
+    <Button id="bad" onClick={props.clickHandler}/>
   </div>
 )
+
+const Statistic = ({text, score, percentage}) =>
+  <p>{text} {score}{percentage && '%'}</p>
 
 const Statistics = ({good, neutral, bad}) => {
   const all = good + neutral + bad
@@ -21,12 +27,12 @@ const Statistics = ({good, neutral, bad}) => {
     return (
       <div>
         <h1>statistics</h1>
-        <p>good {good}</p>
-        <p>neutral {neutral}</p>
-        <p>bad {bad}</p>
-        <p>all {all}</p>
-        <p>average {average}</p>
-        <p>positive {positive}%</p>
+        <Statistic text="good" score={good}/>
+        <Statistic text="neutral" score={neutral}/>
+        <Statistic text="bad" score={bad}/>
+        <Statistic text="all" score={all}/>
+        <Statistic text="average" score={average}/>
+        <Statistic text="positive" score={positive} percentage={true}/>
       </div>
     )
   }
