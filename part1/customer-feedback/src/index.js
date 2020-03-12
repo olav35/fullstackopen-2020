@@ -14,7 +14,9 @@ const Feedback = (props) => (
 )
 
 const Statistic = ({text, score, percentage}) =>
-  <p>{text} {score}{percentage && '%'}</p>
+  <tr>
+    <th>{text}</th><td>{score}{percentage && '%'}</td>
+  </tr>
 
 const Statistics = ({good, neutral, bad}) => {
   const all = good + neutral + bad
@@ -27,12 +29,16 @@ const Statistics = ({good, neutral, bad}) => {
     return (
       <div>
         <h1>statistics</h1>
-        <Statistic text="good" score={good}/>
-        <Statistic text="neutral" score={neutral}/>
-        <Statistic text="bad" score={bad}/>
-        <Statistic text="all" score={all}/>
-        <Statistic text="average" score={average}/>
-        <Statistic text="positive" score={positive} percentage={true}/>
+        <table>
+          <tbody>
+            <Statistic text="good" score={good}/>
+            <Statistic text="neutral" score={neutral}/>
+            <Statistic text="bad" score={bad}/>
+            <Statistic text="all" score={all}/>
+            <Statistic text="average" score={average}/>
+            <Statistic text="positive" score={positive} percentage={true}/>
+          </tbody>
+        </table>
       </div>
     )
   }
