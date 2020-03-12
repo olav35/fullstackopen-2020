@@ -4,6 +4,11 @@ import ReactDOM from 'react-dom'
 const App = (props) => {
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
+  const mostVotes = votes.findIndex(outerVotes =>
+    votes.every(innerVotes => outerVotes >= innerVotes)
+  )
+  console.log(mostVotes)
+  console.log(anecdotes[mostVotes])
   const clickHandler = (event) => {
     const id = event.target.id
     if(id === 'next-anecdote'){
@@ -17,10 +22,14 @@ const App = (props) => {
 
   return (
     <div>
-      {votes[selected]} {props.anecdotes[selected]}
-      <br></br>
+      <h1>Anecdote of the day</h1>
+      {props.anecdotes[selected]}
+      <p>has {votes[selected]} votes</p>
       <button id="vote" onClick={clickHandler}>vote</button>
       <button id="next-anecdote" onClick={clickHandler}>next anecdote</button>
+      <h1>Anecdote with the most votes</h1>
+      {props.anecdotes[mostVotes]}
+      <p>has {votes[mostVotes]} votes</p>
     </div>
   )
 }
