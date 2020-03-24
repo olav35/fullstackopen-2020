@@ -9,8 +9,12 @@ const App = () => {
   const changeHandler = (event) => setNewName(event.target.value)
   const submitHandler = (event) => {
     event.preventDefault()
-    setPersons([...persons].concat({ name: newName }))
-    setNewName("")
+    if(persons.some(person => person.name === newName)) {
+      alert(`${newName} is already in the phonebook`)
+    } else {
+      setPersons([...persons].concat({ name: newName }))
+      setNewName("")
+    }
   }
 
   return (
