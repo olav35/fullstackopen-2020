@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState } from "react"
+import PersonForm from "./components/PersonForm"
+import Filter from "./components/Filter"
+import Persons from "./components/Persons"
 
 const App = () => {
   const [ persons, setPersons] = useState([
     { name: 'Arto Hellas' , number: "12345678"}
   ])
 
-  const [ newName, setNewName ] = useState('')
-  const [ newNumber, setNewNumber ] = useState('')
-  const [ filter, setFilter ] = useState('')
+  const [ newName, setNewName ] = useState("")
+  const [ newNumber, setNewNumber ] = useState("")
+  const [ filter, setFilter ] = useState("")
 
   const nameChangeHandler = (event) => setNewName(event.target.value)
   const numberChangeHandler = (event) => setNewNumber(event.target.value)
@@ -28,29 +31,15 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      filter shown with <input value={filter} onChange={filterChangeHandler}/>
-      <h2>add a new</h2>
-      <form onSubmit={submitHandler}>
-        <div>
-          name: <input value={newName} onChange={nameChangeHandler}/>
-          <br></br>
-          number: <input value={newNumber} onChange={numberChangeHandler}/>
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <ul>
-        {
-          persons.filter(person => person.name.indexOf(filter) !== -1).map(person => (
-            <li key={person.name}>
-              {person.name} {person.number}
-            </li>
-          )
-          )
-        }
-      </ul>
+      <Filter filter={filter} filterChangeHandler={filterChangeHandler}/> 
+      <h3>Add a new</h3>
+      <PersonForm submitHandler={submitHandler}
+                  newName={newName}
+                  nameChangeHandler={nameChangeHandler}
+                  newNumber={newNumber}
+                  numberChangeHandler={numberChangeHandler}/>
+      <h3>Numbers</h3>
+      <Persons persons={persons} filter={filter}/>
     </div>
   )
 }
