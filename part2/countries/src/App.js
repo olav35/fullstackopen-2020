@@ -24,13 +24,18 @@ function App () {
   const handleFindCountries = (event) => {
     setFindCountries(event.target.value)
   }
+
+  const handleClickCountry = (event) => {
+    setFindCountries(event.target.dataset.country)
+  }
+
   return (
     <div>
       <FindCountries handleFindCountries={handleFindCountries} />
       {
         foundCountries.length === 0 ? <p>Type text to search for a country</p>
           : foundCountries.length === 1 ? <Country country={foundCountries[0]}/>
-            : foundCountries.length < 10 ? <Countries countries={foundCountries}/>
+            : foundCountries.length < 10 ? <Countries countries={foundCountries} handleClickCountry={handleClickCountry}/>
               : <p>Too many matches, specify another filter</p>
       }
     </div>
