@@ -3,20 +3,22 @@ import ReactDOM from 'react-dom'
 
 const Button = (props) => <button onClick={() => props.setState(props.state + 1)}>{props.name}</button>
 
-const Statistic = (props) => <p>{props.name} {props.number} {props.percent && '%'}</p>
+const Statistic = (props) => <tr><td>{props.name}</td><td>{props.number} {props.percent && '%'}</td></tr>
 
 const Statistics = (props) =>
   <div>
     <h1>statistics</h1>
     {
       props.statistics.good + props.statistics.bad + props.statistics.neutral
-        ? <>
-            <Statistic name='good' number={props.statistics.good}/>
-            <Statistic name='neutral' number={props.statistics.neutral}/>
-            <Statistic name='bad' number={props.statistics.bad}/>
-            <Statistic name='average' number={props.statistics.average}/>
-            <Statistic name='positive' number={props.statistics.positive} percent={true}/>
-          </>
+        ? <table>
+            <tbody>
+              <Statistic name='good' number={props.statistics.good}/>
+              <Statistic name='neutral' number={props.statistics.neutral}/>
+              <Statistic name='bad' number={props.statistics.bad}/>
+              <Statistic name='average' number={props.statistics.average}/>
+              <Statistic name='positive' number={props.statistics.positive} percent={true}/>
+            </tbody>
+          </table>
         : <p>No feeback given</p>
     }
   </div>
