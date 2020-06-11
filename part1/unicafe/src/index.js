@@ -1,23 +1,25 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const Button = (props) => {
+const Button = (props) => <button onClick={() => props.setState(props.state + 1)}>{props.name}</button>
 
-}
+const Statistic = (props) => <p>{props.name} {props.number} {props.percent && '%'}</p>
 
-const Statistics = (props) => (
+const Statistics = (props) =>
   <div>
     <h1>statistics</h1>
-    {props.statistics.good + props.statistics.bad + props.statistics.neutral ? <>
-                                                                                 <p>good {props.statistics.good}</p>
-                                                                                 <p>neutral {props.statistics.neutral}</p>
-                                                                                 <p>bad {props.statistics.bad}</p>
-                                                                                 <p>average {props.statistics.average}</p>
-                                                                                 <p>positive {props.statistics.positive} %</p>
-                                                                               </>
-                                                                             : <p>No feeback given</p>}
+    {
+      props.statistics.good + props.statistics.bad + props.statistics.neutral
+        ? <>
+            <Statistic name='good' number={props.statistics.good}/>
+            <Statistic name='neutral' number={props.statistics.neutral}/>
+            <Statistic name='bad' number={props.statistics.bad}/>
+            <Statistic name='average' number={props.statistics.average}/>
+            <Statistic name='positive' number={props.statistics.positive} percent={true}/>
+          </>
+        : <p>No feeback given</p>
+    }
   </div>
-)
 
 const App = () => {
   const [good, setGood] = useState(0)
@@ -28,13 +30,13 @@ const App = () => {
   const positive = (good) / total * 100
 
   return (
-    <div>
+      <div>
       <h1>Give feedback</h1>
-      <button onClick={() => setGood(good + 1)}>good</button>
-      <button onClick={() => setNeutral(neutral + 1)}>neutral</button>
-      <button onClick={() => setBad(bad + 1)}>bad</button>
+      <Button setState={setGood} state={good} name='good'/>
+      <Button setState={setNeutral} state={neutral} name='neutral'/>
+      <Button setState={setBad} state={bad} name='bad'/>
       <Statistics statistics={{good, neutral, bad, average, positive}}/>
-    </div>
+      </div>
   )
 }
 
