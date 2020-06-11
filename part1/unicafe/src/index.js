@@ -1,21 +1,23 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const Statistics = (props) => {
-  return (
-    <div>
-      <h1>statistics</h1>
-      {props.statistics.good + props.statistics.bad + props.statistics.neutral ? <>
-                                <p>good {props.statistics.good}</p>
-                                <p>neutral {props.statistics.neutral}</p>
-                                <p>bad {props.statistics.bad}</p>
-                                <p>average {props.statistics.average}</p>
-                                <p>positive {props.statistics.positive} %</p>
-                              </>
-                            : <p>No feeback given</p>}
-    </div>
-  )
+const Button = (props) => {
+
 }
+
+const Statistics = (props) => (
+  <div>
+    <h1>statistics</h1>
+    {props.statistics.good + props.statistics.bad + props.statistics.neutral ? <>
+                                                                                 <p>good {props.statistics.good}</p>
+                                                                                 <p>neutral {props.statistics.neutral}</p>
+                                                                                 <p>bad {props.statistics.bad}</p>
+                                                                                 <p>average {props.statistics.average}</p>
+                                                                                 <p>positive {props.statistics.positive} %</p>
+                                                                               </>
+                                                                             : <p>No feeback given</p>}
+  </div>
+)
 
 const App = () => {
   const [good, setGood] = useState(0)
