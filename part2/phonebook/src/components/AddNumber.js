@@ -1,21 +1,7 @@
 import React from 'react'
 
-const AddNumber = ({setFilteredPersons, searchQuery, setNewName, setPersons, newName, persons, newNumber, setNewNumber}) => {
-  const handleNewNameChange = (event) => setNewName(event.target.value)
-  const handleNewNumberChange = (event) => setNewNumber(event.target.value)
-  const addNewPerson = (event) => {
-    event.preventDefault()
-
-    const newPersons = [...persons].concat({name: newName, number: newNumber})
-    if(persons.some((person) => person.name === newName)){
-      alert(`${newName} is already added to the phonebook`)
-    } else {
-      setPersons(newPersons)
-      setNewName('')
-      setNewNumber('')
-    }
-    setFilteredPersons(newPersons.filter(person => person.name.toUpperCase().includes(searchQuery.toUpperCase())))
-  }
+const AddNumber = (props) => {
+  const {addNewPerson, handleNewNameChange, handleNewNumberChange, newName, newNumber} = props
 
   return (
     <div>

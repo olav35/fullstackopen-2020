@@ -12,11 +12,38 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ searchQuery, setSearchQuery ] = useState('')
 
+  const handleNewNameChange = (event) => setNewName(event.target.value)
+  const handleNewNumberChange = (event) => setNewNumber(event.target.value)
+
+  const addNewPerson = (event) => {
+    event.preventDefault()
+
+    if(persons.some((person) => person.name === newName)){
+      alert(`${newName} is already added to the phonebook`)
+    } else {
+      const newPersons = [...persons].concat({name: newName, number: newNumber})
+      setPersons(newPersons)
+      setNewName('')
+      setNewNumber('')
+      setFilteredPersons(newPersons.filter(person => person.name.toUpperCase().includes(searchQuery.toUpperCase())))
+    }
+  }
+
+  const handleSearchQueryChange = (event) => {
+    setFilteredPersons(persons.filter(person => person.name.toUpperCase().includes(event.target.value.toUpperCase())))
+    setSearchQuery(event.target.value)
+  }
+
   return (
     <div>
       <h1>Phonebook</h1>
-      <Filter setSearchQuery={setSearchQuery} searchQuery={searchQuery} persons={persons} setFilteredPersons={setFilteredPersons}/>
-      <AddNumber searchQuery={searchQuery} setFilteredPersons={setFilteredPersons} newNumber={newNumber} setNewNumber={setNewNumber} setPersons={setPersons} persons={persons} setNewName={setNewName} newName={newName}/>
+      <Filter setSearchQuery={setSearchQuery}
+              handleSearchQueryChange={handleSearchQueryChange}/>
+      <AddNumber handleNewNameChange={handleNewNameChange}
+                 handleNewNumberChange={handleNewNumberChange}
+                 newNumber={newNumber}
+                 newName={newName}
+                 addNewPerson={addNewPerson}/>
       <Numbers persons={filteredPersons}/>
     </div>
   )
