@@ -4,13 +4,14 @@ import Numbers from './components/Numbers'
 
 const App = () => {
   const [ persons, setPersons ] = useState([
-    { name: 'Arto Hellas' }
+    { name: 'Arto Hellas', number: '39-44-5323523'}
   ])
   const [ newName, setNewName ] = useState('')
+  const [ newNumber, setNewNumber ] = useState('')
 
   return (
     <div>
-      <Phonebook setPersons={setPersons} persons={persons} setNewName={setNewName} newName={newName}/>
+      <Phonebook newNumber={newNumber} setNewNumber={setNewNumber} setPersons={setPersons} persons={persons} setNewName={setNewName} newName={newName}/>
       <Numbers persons={persons}/>
     </div>
   )
