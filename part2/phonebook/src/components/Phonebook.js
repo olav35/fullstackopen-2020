@@ -4,8 +4,13 @@ const Phonebook = ({setNewName, setPersons, newName, persons}) => {
   const handleNewNameChange = (event) => setNewName(event.target.value)
   const addNewName = (event) => {
     event.preventDefault()
-    setPersons([...persons].concat({name: newName}))
-    setNewName('')
+    console.table(persons)
+    if(persons.some((person) => person.name === newName)){
+      alert(`${newName} is already added to the phonebook`)
+    } else {
+      setPersons([...persons].concat({name: newName}))
+      setNewName('')
+    }
   }
   return (
     <form onSubmit={addNewName}>
