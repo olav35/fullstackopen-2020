@@ -1,19 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import AddNumber from './components/AddNumber'
 import Numbers from './components/Numbers'
 import Filter from './components/Filter'
 
 const App = () => {
-  const [ persons, setPersons ] = useState([
-    { name: 'Arto Hellas', number: '39-44-5323523'}
-  ])
-  const [ filteredPersons, setFilteredPersons ] = useState(persons) // maybe [...persons]
+  const [ persons, setPersons ] = useState([])
+  const [ filteredPersons, setFilteredPersons ] = useState(persons)
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ searchQuery, setSearchQuery ] = useState('')
 
   const handleNewNameChange = (event) => setNewName(event.target.value)
   const handleNewNumberChange = (event) => setNewNumber(event.target.value)
+  const filterPersons = (newPersons, searchQuery) => setFilteredPersons(newPersons.filter(person =>
+          person.name.toUpperCase().includes(searchQuery.toUpperCase())))
 
   const addNewPerson = (event) => {
     event.preventDefault()
@@ -25,14 +26,22 @@ const App = () => {
       setPersons(newPersons)
       setNewName('')
       setNewNumber('')
-      setFilteredPersons(newPersons.filter(person => person.name.toUpperCase().includes(searchQuery.toUpperCase())))
+      filterPersons(newPersons,searchQuery)
     }
   }
 
   const handleSearchQueryChange = (event) => {
-    setFilteredPersons(persons.filter(person => person.name.toUpperCase().includes(event.target.value.toUpperCase())))
+    filterPersons(persons, event.target.value)
     setSearchQuery(event.target.value)
   }
+
+  useEffect(() =>
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        setPersons(response.data)
+        filterPersons(response.data, searchQuery)
+      }), [])
 
   return (
     <div>
