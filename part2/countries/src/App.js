@@ -9,32 +9,29 @@ function App() {
   const [filteredCountries, setFilteredCountries] = useState([])
   const [filter, setFilter] = useState('')
 
-  const handleFilterChange = (event) => {
-    setFilter(event.target.value)
-    filterCountries(event.target.value, allCountries)
-  }
+  useEffect(() => setFilteredCountries(allCountries.filter(country =>
+    country.name.toUpperCase().includes(filter.toUpperCase()))),
+    [filter, allCountries])
 
-  const filterCountries = (filter, countries) =>
-        setFilteredCountries(countries.filter(country => country.name
-                                              .toUpperCase()
-                                              .includes(filter.toUpperCase())))
 
   useEffect(() => {
     Axios
       .get('https://restcountries.eu/rest/v2/all')
       .then(({data}) => {
         setAllCountries(data)
-        filterCountries(filter, data)
       })}
-            // eslint-disable-next-line react-hooks/exhaustive-deps
   , [])
+
+  const handleFilterChange = (event) => setFilter(event.target.value)
 
   return (
     <div>
       <Filter setFilter={setFilter}
               filter={filter}
               handleFilterChange={handleFilterChange}/>
-      <Countries countries={filteredCountries}/>
+      <Countries countries={filteredCountries}
+                 setFilter={setFilter}
+                 handleCountrySelection={handleFilterChange}/>
     </div>
   )
 }
