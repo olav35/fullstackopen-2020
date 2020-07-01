@@ -1,13 +1,10 @@
-import React, {useEffect, useState} from 'react' // lukter litt
+import React, {useEffect, useState} from 'react'
 import Axios from 'axios'
 import './App.css'
 import Filter from './components/Filter'
 import Countries from './components/Countries'
 
 function App() {
-  // DONE fetch allCountries
-  // TODO filter to filtereredCountries
-  // TODO render Countries
   const [allCountries, setAllCountries] = useState([])
   const [filteredCountries, setFilteredCountries] = useState([])
   const [filter, setFilter] = useState('')
@@ -25,8 +22,12 @@ function App() {
   useEffect(() => {
     Axios
       .get('https://restcountries.eu/rest/v2/all')
-      .then(({data}) => setAllCountries(data))
-  }, [])
+      .then(({data}) => {
+        setAllCountries(data)
+        filterCountries(filter, data)
+      })}
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+  , [])
 
   return (
     <div>
