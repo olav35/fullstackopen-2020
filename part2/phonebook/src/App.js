@@ -13,8 +13,6 @@ const App = () => {
 
   const handleNewNameChange = (event) => setNewName(event.target.value)
   const handleNewNumberChange = (event) => setNewNumber(event.target.value)
-  const filterPersons = (newPersons, searchQuery) => setFilteredPersons(newPersons.filter(person =>
-          person.name.toUpperCase().includes(searchQuery.toUpperCase())))
 
   const addNewPerson = (event) => {
     event.preventDefault()
@@ -26,28 +24,26 @@ const App = () => {
       setPersons(newPersons)
       setNewName('')
       setNewNumber('')
-      filterPersons(newPersons,searchQuery)
     }
   }
 
-  const handleSearchQueryChange = (event) => {
-    filterPersons(persons, event.target.value)
-    setSearchQuery(event.target.value)
-  }
+  const handleSearchQueryChange = (event) => setSearchQuery(event.target.value)
 
-  useEffect(() =>
+  useEffect(() => {
     axios
       .get('http://localhost:3001/persons')
       .then(response => {
         setPersons(response.data)
-        filterPersons(response.data, searchQuery)
-      }), [])
+      })}, [])
+
+  useEffect(() => setFilteredPersons(persons.filter(person =>
+    person.name.toUpperCase().includes(searchQuery.toUpperCase())))
+  , [searchQuery, persons])
 
   return (
     <div>
       <h1>Phonebook</h1>
-      <Filter setSearchQuery={setSearchQuery}
-              handleSearchQueryChange={handleSearchQueryChange}/>
+      <Filter handleSearchQueryChange={handleSearchQueryChange}/>
       <AddNumber handleNewNameChange={handleNewNameChange}
                  handleNewNumberChange={handleNewNumberChange}
                  newNumber={newNumber}
