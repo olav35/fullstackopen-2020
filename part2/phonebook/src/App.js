@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import AddNumber from './components/AddNumber'
 import Numbers from './components/Numbers'
 import Filter from './components/Filter'
+import personService from './services/person'
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
   const [ filteredPersons, setFilteredPersons ] = useState(persons)
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
+
   const [ searchQuery, setSearchQuery ] = useState('')
 
   const handleNewNameChange = (event) => setNewName(event.target.value)
@@ -20,11 +21,9 @@ const App = () => {
     if(persons.some((person) => person.name === newName)){
       alert(`${newName} is already added to the phonebook`)
     } else {
-      axios
-        .post('http://localhost:3001/persons/', {name: newName, number: newNumber})
-        .then(response => {
-          const newPersons = [...persons].concat(response.data)
-          setPersons(newPersons)
+      personService.create({name: newName, number: newNumber})
+        .then(newPerson => {
+          setPersons([...persons].concat(newPerson))
           setNewName('')
           setNewNumber('')
         })
@@ -33,12 +32,7 @@ const App = () => {
 
   const handleSearchQueryChange = (event) => setSearchQuery(event.target.value)
 
-  useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
-      })}, [])
+  useEffect(() => {personService.getAll().then(persons => setPersons(persons))}, [])
 
   useEffect(() => setFilteredPersons(persons.filter(person =>
     person.name.toUpperCase().includes(searchQuery.toUpperCase())))
