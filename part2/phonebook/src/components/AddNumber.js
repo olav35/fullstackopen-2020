@@ -1,12 +1,12 @@
 import React from 'react'
 
 const AddNumber = (props) => {
-  const {addNewPerson, onNewNameChange, onNewNumberChange, newName, newNumber} = props
+  const {onAddNewPerson, onNewNameChange, onNewNumberChange, newName, newNumber} = props
 
   return (
     <div>
       <h1>add a new</h1>
-      <form onSubmit={addNewPerson}>
+      <form onSubmit={onAddNewPerson}>
         <div>
           name: <input value={newName} onChange={onNewNameChange}/>
           <br/>

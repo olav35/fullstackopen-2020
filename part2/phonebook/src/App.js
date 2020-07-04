@@ -15,22 +15,28 @@ const App = () => {
   const handleNewNameChange = (event) => setNewName(event.target.value)
   const handleNewNumberChange = (event) => setNewNumber(event.target.value)
 
-  const addNewPerson = (event) => {
+  const handleAddNewPerson = (event) => {
     event.preventDefault()
 
-    if(persons.some((person) => person.name === newName)){
-      alert(`${newName} is already added to the phonebook`)
-    } else {
+    let person = persons.find((p) => p.name === newName)
+    if(!person)
       personService.create({name: newName, number: newNumber})
-        .then(newPerson => {
-          setPersons([...persons].concat(newPerson))
-          setNewName('')
-          setNewNumber('')
-        })
+                   .then(newPerson => {
+                     setPersons([...persons].concat(newPerson))
+                   })
+    else if(window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)){
+      personService.update(person.id, {...person, number: newNumber}).then(newPerson =>
+        setPersons(persons.map(innerPerson =>
+          innerPerson.id === person.id ? newPerson : innerPerson
+        ))
+      )
     }
+    setNewName('')
+    setNewNumber('')
   }
 
   const handleSearchQueryChange = (event) => setSearchQuery(event.target.value)
+
   const handleDeletePerson = (event) => {
     const id = Number(event.target.value)
     const name = persons.find(person => person.id === id).name
@@ -54,7 +60,7 @@ const App = () => {
                  onNewNumberChange={handleNewNumberChange}
                  newNumber={newNumber}
                  newName={newName}
-                 addNewPerson={addNewPerson}/>
+                 onAddNewPerson={handleAddNewPerson}/>
       <Numbers persons={filteredPersons}
                onDeletePerson={handleDeletePerson}/>
     </div>
