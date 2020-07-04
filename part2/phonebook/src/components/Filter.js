@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Filter = ({handleSearchQueryChange, searchQuery}) => (
+const Filter = ({onSearchQueryChange, searchQuery}) => (
   <div>
-    filter shown with <input value={searchQuery} onChange={handleSearchQueryChange}/>
+    filter shown with <input value={searchQuery} onChange={onSearchQueryChange}/>
   </div>
 )
 

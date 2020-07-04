@@ -31,6 +31,14 @@ const App = () => {
   }
 
   const handleSearchQueryChange = (event) => setSearchQuery(event.target.value)
+  const handleDeletePerson = (event) => {
+    const id = Number(event.target.value)
+    const name = persons.find(person => person.id === id).name
+    if(window.confirm(`Delete ${name}`)){
+      setPersons(persons.filter(person => person.id !== id))
+      personService.remove(id)
+    }
+  }
 
   useEffect(() => {personService.getAll().then(persons => setPersons(persons))}, [])
 
@@ -41,13 +49,14 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <Filter handleSearchQueryChange={handleSearchQueryChange}/>
-      <AddNumber handleNewNameChange={handleNewNameChange}
-                 handleNewNumberChange={handleNewNumberChange}
+      <Filter onSearchQueryChange={handleSearchQueryChange}/>
+      <AddNumber onNewNameChange={handleNewNameChange}
+                 onNewNumberChange={handleNewNumberChange}
                  newNumber={newNumber}
                  newName={newName}
                  addNewPerson={addNewPerson}/>
-      <Numbers persons={filteredPersons}/>
+      <Numbers persons={filteredPersons}
+               onDeletePerson={handleDeletePerson}/>
     </div>
   )
 }
