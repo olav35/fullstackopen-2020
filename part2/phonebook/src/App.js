@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import AddNumber from './components/AddNumber'
 import Numbers from './components/Numbers'
 import Filter from './components/Filter'
+import Notification from './components/Notification'
 import personService from './services/person'
 
 const App = () => {
@@ -9,7 +10,7 @@ const App = () => {
   const [ filteredPersons, setFilteredPersons ] = useState(persons)
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
-
+  const [ notification, setNotification ] = useState(null)
   const [ searchQuery, setSearchQuery ] = useState('')
 
   const handleNewNameChange = (event) => setNewName(event.target.value)
@@ -23,14 +24,19 @@ const App = () => {
       personService.create({name: newName, number: newNumber})
                    .then(newPerson => {
                      setPersons([...persons].concat(newPerson))
+                     setNotification(`Added ${newPerson.name}`)
                    })
     else if(window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)){
-      personService.update(person.id, {...person, number: newNumber}).then(newPerson =>
+      personService.update(person.id, {...person, number: newNumber}).then(newPerson => {
         setPersons(persons.map(innerPerson =>
           innerPerson.id === person.id ? newPerson : innerPerson
         ))
+        const message = `Updated ${newPerson.name}`
+        setNotification(message)
+      }
       )
     }
+    setTimeout(() => setNotification(null), 5000)
     setNewName('')
     setNewNumber('')
   }
@@ -55,6 +61,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification message={notification}/>
       <Filter onSearchQueryChange={handleSearchQueryChange}/>
       <AddNumber onNewNameChange={handleNewNameChange}
                  onNewNumberChange={handleNewNumberChange}
