@@ -1,9 +1,9 @@
 import React from 'react'
 
-const Notification = ({message}) =>
-  message ? (
-    <div className="notification">
-      {message}
+const Notification = ({notification}) =>
+  notification ? (
+    <div className={[notification.type, 'notification'].join(' ')}>
+      {notification.message}
     </div>
   ) : null
 

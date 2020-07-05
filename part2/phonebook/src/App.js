@@ -19,22 +19,23 @@ const App = () => {
   const handleAddNewPerson = (event) => {
     event.preventDefault()
 
+    const errorMessage = `Information of ${newName} has already been removed from the server.`
     let person = persons.find((p) => p.name === newName)
     if(!person)
       personService.create({name: newName, number: newNumber})
                    .then(newPerson => {
                      setPersons([...persons].concat(newPerson))
-                     setNotification(`Added ${newPerson.name}`)
-                   })
+                     const message = `Added ${newPerson.name}`
+                     setNotification({message, type: 'success'})
+                   }).catch(error => setNotification({message: errorMessage, type: 'failure'}))
     else if(window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)){
       personService.update(person.id, {...person, number: newNumber}).then(newPerson => {
         setPersons(persons.map(innerPerson =>
           innerPerson.id === person.id ? newPerson : innerPerson
         ))
         const message = `Updated ${newPerson.name}`
-        setNotification(message)
-      }
-      )
+        setNotification({message, type: 'success'})
+      }).catch(error => setNotification({message: errorMessage, type: 'failure'}))
     }
     setTimeout(() => setNotification(null), 5000)
     setNewName('')
@@ -61,7 +62,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <Notification message={notification}/>
+      <Notification notification={notification}/>
       <Filter onSearchQueryChange={handleSearchQueryChange}/>
       <AddNumber onNewNameChange={handleNewNameChange}
                  onNewNumberChange={handleNewNumberChange}
