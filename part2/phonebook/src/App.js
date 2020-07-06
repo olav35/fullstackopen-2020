@@ -27,7 +27,9 @@ const App = () => {
                      setPersons([...persons].concat(newPerson))
                      const message = `Added ${newPerson.name}`
                      setNotification({message, type: 'success'})
-                   }).catch(error => setNotification({message: errorMessage, type: 'failure'}))
+                   }).catch(error => {
+                     setNotification({message: error.response.data.error, type: 'failure'})
+                   })
     else if(window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)){
       personService.update(person.id, {...person, number: newNumber}).then(newPerson => {
         setPersons(persons.map(innerPerson =>
@@ -35,7 +37,7 @@ const App = () => {
         ))
         const message = `Updated ${newPerson.name}`
         setNotification({message, type: 'success'})
-      }).catch(error => setNotification({message: errorMessage, type: 'failure'}))
+      }).catch(_ => setNotification({message: errorMessage, type: 'failure'}))
     }
     setTimeout(() => setNotification(null), 5000)
     setNewName('')
