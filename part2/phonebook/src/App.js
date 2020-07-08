@@ -35,7 +35,7 @@ const App = () => {
   const handleSearchQueryChange = (event) => setSearchQuery(event.target.value)
 
   const handleDeletePerson = (event) => {
-    const id = Number(event.target.value)
+    const id = event.target.value
     const name = persons.find(person => person.id === id).name
     if(window.confirm(`Delete ${name}`)){
       setPersons(persons.filter(person => person.id !== id))
