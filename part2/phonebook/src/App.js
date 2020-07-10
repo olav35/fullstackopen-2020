@@ -28,6 +28,8 @@ const App = () => {
                      const message = `Added ${newPerson.name}`
                      setNotification({message, type: 'success'})
                    }).catch(error => {
+                     //setNotification({message: error.response.data.error, type: 'failure'})
+                     console.log(error.response.data)
                      setNotification({message: error.response.data.error, type: 'failure'})
                    })
     else if(window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)){
